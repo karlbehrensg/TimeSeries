@@ -67,29 +67,29 @@ train_set = windowed_dataset(x_train, window_size, batch_size, shuffle_buffer_si
 print(train_set)
 print(x_train.shape)
 
-# model = tf.keras.models.Sequential([
-#     tf.keras.layers.Conv1D(filters=64, kernel_size=5,
-#                            strides=1, padding='causal',
-#                            activation='relu', input_shape=[None, 1]),
-#     tf.keras.layers.LSTM(64, return_sequences=True),
-#     tf.keras.layers.LSTM(32, return_sequences=True),
-#     tf.keras.layers.Dense(64, activation='relu'),
-#     tf.keras.layers.Dense(32, activation='relu'),
-#     tf.keras.layers.Dense(1),
-#     tf.keras.layers.Lambda(lambda x: x * 400.0)
-# ])
-#
-# lr_schedule = tf.keras.callbacks.LearningRateScheduler(
-#     lambda epoch: 1e-8 * 10 ** (epoch / 20))
-# optimizer = tf.keras.optimizers.SGD(lr=1e-8, momentum=0.9)
-# model.compile(loss=tf.keras.losses.Huber(),
-#               optimizer=optimizer,
-#               metrics=["mae"])
-# history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
-#
-# plt.semilogx(history.history["lr"], history.history["loss"])
-# plt.axis([1e-8, 1e-4, 0, 60])
-# plt.show()
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Conv1D(filters=64, kernel_size=5,
+                           strides=1, padding='causal',
+                           activation='relu', input_shape=[None, 1]),
+    tf.keras.layers.LSTM(64, return_sequences=True),
+    tf.keras.layers.LSTM(32, return_sequences=True),
+    tf.keras.layers.Dense(64, activation='relu'),
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(1),
+    tf.keras.layers.Lambda(lambda x: x * 400.0)
+])
+
+lr_schedule = tf.keras.callbacks.LearningRateScheduler(
+    lambda epoch: 1e-8 * 10 ** (epoch / 20))
+optimizer = tf.keras.optimizers.SGD(lr=1e-8, momentum=0.9)
+model.compile(loss=tf.keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
+
+plt.semilogx(history.history["lr"], history.history["loss"])
+plt.axis([1e-8, 1e-4, 0, 60])
+plt.show()
 
 tf.keras.backend.clear_session()
 tf.random.set_seed(51)
